@@ -16,8 +16,7 @@ namespace Server
         {
             NetTcpBinding binding = new NetTcpBinding();
             string address = "net.tcp://localhost:9999/CredentialManager";
-            //klasa koja poziva metode 
-
+            EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
 
@@ -26,7 +25,7 @@ namespace Server
            
             host.Open();
             //Host open
-            using (WcfServer server = new WcfServer(binding, new EndpointAddress(new Uri(address))))
+            using (WcfServer server = new WcfServer(binding, endpointAddress))
             {
                 while (true)
                 {

@@ -52,9 +52,17 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClientCommon\ClientCommon.csproj">
+      <Project>{5CBCEF8A-AED8-4559-A395-5972CEAFE8AD}</Project>
+      <Name>ClientCommon</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Common\Common.csproj">
       <Project>{C0168A40-A04B-4595-90BD-7B83A52C79D9}</Project>
       <Name>Common</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServerCommon\ServerCommon.csproj">
+      <Project>{3AC8912C-DD40-454A-BDC8-882F95215121}</Project>
+      <Name>ServerCommon</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -8,10 +8,10 @@ using System.Threading.Tasks;
 
 namespace Client
 {
-    public class WcfClient : ChannelFactory<IAccounts>, IDisposable
+    public class WcfClient : ChannelFactory<ILog>, IDisposable
 
     {
-        IAccounts factory;
+        ILog factory;
 
         public WcfClient(NetTcpBinding binding, EndpointAddress address) : base(binding, address)
         {
@@ -23,6 +23,29 @@ namespace Client
             factory = this.CreateChannel();
         }
 
-    
+        public void LogIn(string username, string password)
+        {
+            try
+            {
+                factory.LogIn(username, password);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[LogIn] ERROR = {0}", e.Message);
+            }
+        }
+
+
+        public void LogOut(string username)
+        {
+            try
+            {
+                factory.LogOut(username);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("[LogOut] ERROR = {0}", e.Message);
+            }
+        }
     }
 }
