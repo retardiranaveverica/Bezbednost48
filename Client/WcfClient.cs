@@ -23,11 +23,11 @@ namespace Client
             factory = this.CreateChannel();
         }
 
-        public void LogIn(string username, string password)
+        public void LogIn(/*string username, string password*/)
         {
             try
             {
-                factory.LogIn(username, password);
+                factory.LogIn(/*username, password*/);
             }
             catch (Exception e)
             {
@@ -36,11 +36,11 @@ namespace Client
         }
 
 
-        public void LogOut(string username)
+        public void LogOut(/*string username*/)
         {
             try
             {
-                factory.LogOut(username);
+                factory.LogOut(/*username*/);
             }
             catch (Exception e)
             {

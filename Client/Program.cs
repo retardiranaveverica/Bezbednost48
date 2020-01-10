@@ -29,6 +29,8 @@ namespace Client
             {
                 Console.WriteLine("Uspesno ste konektovani!\n");
 
+                while (true)
+                {
                     Console.WriteLine("Unesite zeljenu akciju:");
                     Console.WriteLine("1. LogIn");
                     Console.WriteLine("2. LogOut");
@@ -38,24 +40,24 @@ namespace Client
                     {
                         case 1:
 
-                            Console.WriteLine("Unesite username:");
-                            string name = Console.ReadLine();
-                            Console.WriteLine("Unesite lozinku:");
-                            string pass = Console.ReadLine();
+                            /* Console.WriteLine("Unesite username:");
+                             string name = Console.ReadLine();
+                             Console.WriteLine("Unesite lozinku:");
+                             string pass = Console.ReadLine();*/
                             //proxy.LogIn(name, pass);
-                            authenticateService.LogIn(name, pass);
+                            authenticateService.LogIn(/*name, pass*/);
                             break;
                         case 2:
-                            
+                            authenticateService.LogOut();
                             break;
                         default:
                             Console.WriteLine("Izabrali ste nepostojecu akciju!\n");
                             break;
                     }
-                
+                }
             }
 
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }

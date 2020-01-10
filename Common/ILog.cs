@@ -11,9 +11,9 @@ namespace Common
     public interface ILog
     {
         [OperationContract]
-        void LogIn(string username, string password);
+        void LogIn(/*string username, string password*/);
 
         [OperationContract]
-        void LogOut(string username);
+        void LogOut(/*string username*/);
     }
 }

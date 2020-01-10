@@ -104,15 +104,16 @@ namespace ServerCommon
         {
             using (StreamReader sr = new StreamReader(path))
             {
-                var lines = System.IO.File.ReadAllLines(path);
-                foreach (string item in lines)
-                {
-                    var values = item.Split(' ');
-                    User user = new User();
-                    user.Username = values[0];
-                    user.Password = values[1];
-                    dataBaseUser.Add(user);
-                }
+                    var lines = System.IO.File.ReadAllLines(path);
+                    foreach (string item in lines)
+                    {
+                        var values = item.Split(' ');
+                        User user = new User();
+                        user.Username = values[0];
+                        user.Password = values[1];
+                        dataBaseUser.Add(user);
+                    }
+                
             }
         }
 
@@ -121,13 +122,7 @@ namespace ServerCommon
             foreach (User u in dataBaseUser)
             {
                 if (u.Username == user.Username)
-                {
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                   return true;
             }
             return false;
         }
