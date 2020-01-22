@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientCommon
-{
+{   //samo ideja: ako je neko ulogovan, ne moze opet da se loguje(isto i za izlogovane)
     public class AuthenticateService : ILog
     {
         public List<User> ulogovaniKorisnici = new List<User>();
@@ -65,10 +65,10 @@ namespace ClientCommon
         private bool UserNameExist(string username)
         {
             //Snezana putanja
-            string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
             //Maja putanja
-            //string path = @"";
-            
+            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+
             using (StreamReader streamReader = new StreamReader(path))
             {
 
@@ -90,9 +90,9 @@ namespace ClientCommon
         private bool UserPassExist(string password)
         {
             //Snezana putanja
-            string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
             //Maja putanja
-            //string path = @"";
+            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
 
             using (StreamReader streamReader = new StreamReader(path))
             {
@@ -115,7 +115,8 @@ namespace ClientCommon
         private string GetPassword(string username)
         {
             string pass = "";
-            string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
 
             using (StreamReader streamReader  = new StreamReader(path))
             {
