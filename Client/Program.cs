@@ -32,8 +32,10 @@ namespace Client
                 while (true)
                 {
                     Console.WriteLine("Unesite zeljenu akciju:");
+                    Console.WriteLine("*************************");
                     Console.WriteLine("1. LogIn");
                     Console.WriteLine("2. LogOut");
+                    Console.WriteLine("*************************");
                     int akcija = Int32.Parse(Console.ReadLine());
 
                     switch (akcija)
@@ -46,6 +48,7 @@ namespace Client
                              string pass = Console.ReadLine();*/
                             //proxy.LogIn(name, pass);
                             authenticateService.LogIn(/*name, pass*/);
+                            
                             break;
                         case 2:
                             authenticateService.LogOut();

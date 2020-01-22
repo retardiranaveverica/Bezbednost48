@@ -13,7 +13,10 @@ namespace ClientCommon
     public class AuthenticateService : ILog
     {
         public List<User> ulogovaniKorisnici = new List<User>();
+        CredentialsStore credentialsStore = new CredentialsStore();
+        // string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
 
+        #region LogIn
         public void LogIn(/*string username, string password*/)
         {
             Console.WriteLine("Unesite username:");
@@ -21,23 +24,33 @@ namespace ClientCommon
             Console.WriteLine("Unesite lozinku:");
             string pass = Console.ReadLine();
 
-            if (UserNameExist(name) && UserPassExist(pass))
+            
+            if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
             {
-                ulogovaniKorisnici.Add(new User(name, pass));
-                Console.WriteLine("Uspesno ste ulogovani");
+                if (!credentialsStore.isLogged(name))
+                {
+                    ulogovaniKorisnici.Add(new User(name, pass));
+                    Console.WriteLine("Uspesno ste ulogovani");
+                } else
+                    Console.WriteLine("Korisnik je vec ulogovan!");
+                  
+                
             } else
             {
-                if(!UserNameExist(name))
+                if (!credentialsStore.UserNameExist(name))
                     Console.WriteLine("Ne postoji korisnik!");
-                else if(UserNameExist(name) && !UserPassExist(pass))
+                else if (credentialsStore.UserNameExist(name) && !credentialsStore.UserPassExist(pass))
+                {
                     Console.WriteLine("Neispravna lozinka!");
+
+                }
             }
         }
+        #endregion
 
+        #region LogOut
         public void LogOut(/*string username*/)
         {
-
-
             /*string name = WindowsIdentity.GetCurrent().Name;
             Console.WriteLine(name);
             string get_pass = GetPassword(name);*/
@@ -50,18 +63,17 @@ namespace ClientCommon
                 if(user.Username == name)
                 {
                     string pass = user.Password;
-                    ulogovaniKorisnici.Remove(new User(name, pass));
+                    ulogovaniKorisnici.Remove(user);
                     Console.WriteLine("Uspesno ste se izlogovali!");
                     break;
-                } else
-                {
-                    Console.WriteLine("Korisnik sa tim imenom nije ulogovan");
                 }
             }
 
         }
+        #endregion
 
-        #region trazenje username-a
+        // prebaceno u CredentialStore
+       /* #region Looking for username
         private bool UserNameExist(string username)
         {
             //Snezana putanja
@@ -86,7 +98,7 @@ namespace ClientCommon
         }
         #endregion
 
-        #region trazenje lozinke
+        #region Looking for password
         private bool UserPassExist(string password)
         {
             //Snezana putanja
@@ -138,6 +150,20 @@ namespace ClientCommon
 
         #endregion
 
-        
+        #region CheckIsLogged
+
+        private bool isLogged(string username)
+        {
+            foreach(User user in ulogovaniKorisnici)
+            
+                if (user.Username == username)
+                    return true;
+
+            return false;
+            
+        }
+
+        #endregion
+    */
     }
 }

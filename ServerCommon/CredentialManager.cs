@@ -13,7 +13,9 @@ namespace ServerCommon
     {
 
         List<User> dataBaseUser = new List<User>();
-        string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+
+       
         
 
         #region
