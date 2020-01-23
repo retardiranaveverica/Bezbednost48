@@ -13,7 +13,7 @@ namespace ServerCommon
     public class CredentialManager : IAccounts
     {
 
-        List<User> dataBaseUser = new List<User>();
+        List<User> dataBaseUser;
         string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
         //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
 
@@ -74,15 +74,22 @@ namespace ServerCommon
 
             if (IsUserExist(user) != 0)
             {
-                int io = IsUserExist(user);
-                dataBaseUser.RemoveAt(io - 1);
-                WriteList();
+                try
+                {
+                    int io = IsUserExist(user);
+                    dataBaseUser.RemoveAt(io - 1);
+                    WriteList();
 
-                DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer");
-                DirectoryEntry userE = localMachine.Children.Find(username, "User");
-                localMachine.Children.Remove(userE);
-                userE.Close();
-                localMachine.Close();
+                    DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer");
+                    DirectoryEntry userE = localMachine.Children.Find(username, "User");
+                    localMachine.Children.Remove(userE);
+                    userE.Close();
+                    localMachine.Close();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Error: {0}", e.Message);
+                }
             }
             else
             {
@@ -120,6 +127,7 @@ namespace ServerCommon
         {
             using (StreamWriter sw = new StreamWriter(path))
             {
+                
                 foreach (User user in dataBaseUser)
                 {
                     sw.WriteLine(user.Username + " " + user.Password);
@@ -131,6 +139,7 @@ namespace ServerCommon
 
         public void ReadFromFile()
         {
+            dataBaseUser = new List<User>();
             using (StreamReader sr = new StreamReader(path))
             {
                     var lines = System.IO.File.ReadAllLines(path);
