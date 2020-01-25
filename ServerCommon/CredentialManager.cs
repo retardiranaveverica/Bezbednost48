@@ -27,7 +27,7 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password/*, false, false, 0*/);
 
-            if (IsUserExist(user) != 0)
+            if (IsUserExist(username) != 0)
             {
                 Console.WriteLine("Postoji vec");
             }
@@ -72,7 +72,7 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password);
 
-            if (IsUserExist(user) != 0)
+            if (IsUserExist(username) != 0)
             {
                 try
                 {
@@ -99,19 +99,22 @@ namespace ServerCommon
         }
         # endregion
 
-        public void DisableAccount()
+        public void DisableAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountDisabled = true;
         }
 
-        public void EnableAccount()
+        public void EnableAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountDisabled = false;
         }
 
-        public void LockAccount()
+        public void LockAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountLock = true;
         }
 
         //kriptovati lozinku pre upisa u fajl
@@ -165,7 +168,7 @@ namespace ServerCommon
             return false;
         }
         */
-        public int IsUserExist(User user)
+        public int IsUserExist(string username)
         {
             int i = 0;
             int j = 0; ;
@@ -173,7 +176,7 @@ namespace ServerCommon
             foreach (User u in dataBaseUser)
             {
                 i++;
-                if (u.Username == user.Username)
+                if (u.Username == username)
                 {
                     j = i;
                     //retVal = true;

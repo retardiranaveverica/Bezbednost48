@@ -10,8 +10,8 @@ namespace ClientCommon
     {
         private string username;
         private string password;
-      //  private bool accountDisabled = false;
-        //private bool accountLock = false;
+        private bool accountDisabled = false;
+        private bool accountLock = false;
         // private DateTime lastLogIn = DateTime.Now;
         //private int numOfLog = 0;
 
@@ -33,8 +33,8 @@ namespace ClientCommon
 
         public string Username { get => username; set => username = value; }
         public string Password { get => password; set => password = value; }
-       // public bool AccountDisabled { get => accountDisabled; set => accountDisabled = value; }
-        //public bool AccountLock { get => accountLock; set => accountLock = value; }
+        public bool AccountDisabled { get => accountDisabled; set => accountDisabled = value; }
+        public bool AccountLock { get => accountLock; set => accountLock = value; }
        // public int NumOfLog { get => numOfLog; set => numOfLog = value; }
     }
 }
