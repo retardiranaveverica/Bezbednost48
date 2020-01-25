@@ -76,7 +76,7 @@ namespace ServerCommon
             {
                 try
                 {
-                    int io = IsUserExist(user);
+                    int io = IsUserExist(username);
                     dataBaseUser.RemoveAt(io - 1);
                     WriteList();
 
