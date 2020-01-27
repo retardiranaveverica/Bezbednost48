@@ -20,13 +20,13 @@ namespace Common
         void DeleteAccount();
 
         [OperationContract]
-        void LockAccount();
+        void LockAccount(string username);
 
         [OperationContract]
-        void EnableAccount();
+        void EnableAccount(string username);
 
         [OperationContract]
-        void DisableAccount();
+        void DisableAccount(string username);
 
         [OperationContract]
         void ReadFromFile();

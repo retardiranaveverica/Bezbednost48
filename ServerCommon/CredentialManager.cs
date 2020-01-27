@@ -13,14 +13,9 @@ namespace ServerCommon
     public class CredentialManager : IAccounts
     {
 
-        List<User> dataBaseUser = new List<User>();
-        Cryptograpy cryptograpy = new Cryptograpy();
-
-        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
-        
-        //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-        
-
+        List<User> dataBaseUser;
+        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
 
         #region Create Acoount
         public void CreateAccount()
@@ -32,18 +27,15 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password/*, false, false, 0*/);
 
-            if (IsUserExist(user) != 0)
+            if (IsUserExist(username) != 0)
             {
                 Console.WriteLine("Postoji vec");
             }
             else
             {
-                //zamenila sam ovo da bi prvo ubacila u listu jer mislim da tu moze 
-                //lozinka da bude plaintext
-                dataBaseUser.Add(user);
-                string encryptPass = cryptograpy.EncryptString(user.Password);
-                user.Password = encryptPass;
                 WriteToFile(user);
+
+                dataBaseUser.Add(user);
 
                 try
                 {
@@ -80,17 +72,24 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password);
 
-            if (IsUserExist(user) != 0)
+            if (IsUserExist(username) != 0)
             {
-                int io = IsUserExist(user);
-                dataBaseUser.RemoveAt(io - 1);
-                WriteList();
+                try
+                {
+                    int io = IsUserExist(username);
+                    dataBaseUser.RemoveAt(io - 1);
+                    WriteList();
 
-                DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer");
-                DirectoryEntry userE = localMachine.Children.Find(username, "User");
-                localMachine.Children.Remove(userE);
-                userE.Close();
-                localMachine.Close();
+                    DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer");
+                    DirectoryEntry userE = localMachine.Children.Find(username, "User");
+                    localMachine.Children.Remove(userE);
+                    userE.Close();
+                    localMachine.Close();
+                }
+                catch(Exception e)
+                {
+                    Console.WriteLine("Error: {0}", e.Message);
+                }
             }
             else
             {
@@ -100,19 +99,22 @@ namespace ServerCommon
         }
         # endregion
 
-        public void DisableAccount()
+        public void DisableAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountDisabled = true;
         }
 
-        public void EnableAccount()
+        public void EnableAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountDisabled = false;
         }
 
-        public void LockAccount()
+        public void LockAccount(string username)
         {
-            throw new NotImplementedException();
+            User user = dataBaseUser[(IsUserExist(username))];
+            user.AccountLock = true;
         }
 
         //kriptovati lozinku pre upisa u fajl
@@ -128,6 +130,7 @@ namespace ServerCommon
         {
             using (StreamWriter sw = new StreamWriter(path))
             {
+                
                 foreach (User user in dataBaseUser)
                 {
                     sw.WriteLine(user.Username + " " + user.Password);
@@ -139,6 +142,7 @@ namespace ServerCommon
 
         public void ReadFromFile()
         {
+            dataBaseUser = new List<User>();
             using (StreamReader sr = new StreamReader(path))
             {
                     var lines = System.IO.File.ReadAllLines(path);
@@ -164,7 +168,7 @@ namespace ServerCommon
             return false;
         }
         */
-        public int IsUserExist(User user)
+        public int IsUserExist(string username)
         {
             int i = 0;
             int j = 0; ;
@@ -172,7 +176,7 @@ namespace ServerCommon
             foreach (User u in dataBaseUser)
             {
                 i++;
-                if (u.Username == user.Username)
+                if (u.Username == username)
                 {
                     j = i;
                     //retVal = true;
