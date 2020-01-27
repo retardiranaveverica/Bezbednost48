@@ -12,10 +12,12 @@ namespace ServerCommon
 {
     public class CredentialManager : IAccounts
     {
+        
 
         List<User> dataBaseUser;
-        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        Cryptograpy cryptograpy = new Cryptograpy();
 
         #region Create Acoount
         public void CreateAccount()
