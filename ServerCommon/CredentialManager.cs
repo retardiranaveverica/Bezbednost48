@@ -14,8 +14,13 @@ namespace ServerCommon
     {
 
         List<User> dataBaseUser = new List<User>();
-        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        Cryptograpy cryptograpy = new Cryptograpy();
+
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+        
+        //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        
+
 
         #region Create Acoount
         public void CreateAccount()
@@ -33,9 +38,12 @@ namespace ServerCommon
             }
             else
             {
-                WriteToFile(user);
-
+                //zamenila sam ovo da bi prvo ubacila u listu jer mislim da tu moze 
+                //lozinka da bude plaintext
                 dataBaseUser.Add(user);
+                string encryptPass = cryptograpy.EncryptString(user.Password);
+                user.Password = encryptPass;
+                WriteToFile(user);
 
                 try
                 {

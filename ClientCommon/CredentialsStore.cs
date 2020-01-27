@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Common;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ namespace ClientCommon
 {
     public class CredentialsStore
     {
+        Cryptograpy cryptograpy = new Cryptograpy();
         string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
         //string path = @"\BazaKorisnika.txt";
 
@@ -52,7 +54,8 @@ namespace ClientCommon
                 {
                     string text = streamReader.ReadLine();
                     string[] tekst = text.Split(' ');
-                    string userPass = tekst[1];
+                    string decrypt_pass = cryptograpy.DecryptString(tekst[1]);
+                    string userPass = decrypt_pass;
 
                     if (password == userPass)
                         return true;
@@ -78,7 +81,8 @@ namespace ClientCommon
                     string text = streamReader.ReadLine();
                     string[] tekst = text.Split(' ');
                     string name = tekst[0];
-                    string password = tekst[1];
+                    string decrypt_pass = cryptograpy.DecryptString(tekst[1]);
+                    string password = decrypt_pass;
 
                     if (username == name)
                     {
@@ -95,19 +99,23 @@ namespace ClientCommon
         //Provera da li je korisnik ulogovan
         #region CheckIsLogged
    
+        /*
         public bool isLogged(string username)
         {
-            /* foreach (User user in ulogovaniKorisnici)
+            string name = WindowsIdentity.GetCurrent().Name;
+            //Console.WriteLine(name);
+            string[] names = name.Split('\\');
+            string this_user = names[1];
+            //Console.WriteLine(this_user);
+
+            foreach (User user in ulogovaniKorisnici)
 
                  if (user.Username == username)
                      return true;
 
-             return false;*/
+             return false;
 
-            string name = WindowsIdentity.GetCurrent().Name;
-            Console.WriteLine(name);
-            string[] names = name.Split('\'');
-            string this_user = names[1];
+            
 
             if (this_user == username)
                 return true;
@@ -115,7 +123,7 @@ namespace ClientCommon
                 return false;
 
         }
-
+        */
         #endregion
 
 

@@ -9,7 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 namespace ClientCommon
-{   //samo ideja: ako je neko ulogovan, ne moze opet da se loguje(isto i za izlogovane)
+{   
     public class AuthenticateService : ILog
     {
         public List<User> ulogovaniKorisnici = new List<User>();
@@ -27,7 +27,7 @@ namespace ClientCommon
             
             if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
             {
-                if (!credentialsStore.isLogged(name))
+                if (!isLogged(name))
                 {
                     ulogovaniKorisnici.Add(new User(name, pass));
                     Console.WriteLine("Uspesno ste ulogovani");
@@ -51,9 +51,34 @@ namespace ClientCommon
         #region LogOut
         public void LogOut(/*string username*/)
         {
+            #region pokusaj necega
+            //dobijamo trenutnog korisnika
             /*string name = WindowsIdentity.GetCurrent().Name;
-            Console.WriteLine(name);
-            string get_pass = GetPassword(name);*/
+            string[] tekst = name.Split('\\');
+            string userName = tekst[1];
+            
+
+            foreach(User user in ulogovaniKorisnici)
+            {
+                if(user.Username == userName)
+                {
+                    
+                    string get_pass = credentialsStore.GetPassword(name);
+                    Console.WriteLine("Unesite lozinku:");
+                    string pass = Console.ReadLine();
+                    if(get_pass == pass)
+                    {
+                        Console.WriteLine("Uspesno ste se izlogovali!");
+                        ulogovaniKorisnici.Remove(user);
+                    } else
+                    {
+                        Console.WriteLine("Pogresna lozinka!");
+                    }
+                }
+                
+            }*/
+
+            #endregion
 
             Console.WriteLine("Unesite username:");
             string name = Console.ReadLine();
@@ -150,11 +175,12 @@ namespace ClientCommon
         }
 
         #endregion
-
+        */
         #region CheckIsLogged
 
         private bool isLogged(string username)
         {
+
             foreach(User user in ulogovaniKorisnici)
             
                 if (user.Username == username)
@@ -165,6 +191,6 @@ namespace ClientCommon
         }
 
         #endregion
-    */
+    
     }
 }
