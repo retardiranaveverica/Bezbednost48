@@ -2,6 +2,7 @@
 using Common;
 using System;
 using System.Collections.Generic;
+using System.DirectoryServices;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -13,12 +14,10 @@ namespace ServerCommon
     {
 
         List<User> dataBaseUser = new List<User>();
-        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
 
-       
-        
-
-        #region
+        #region Create Acoount
         public void CreateAccount()
         {
             //ReadFromFile();
@@ -28,21 +27,41 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password/*, false, false, 0*/);
 
-            if (IsUserExist(user))
+            if (IsUserExist(user) != 0)
             {
                 Console.WriteLine("Postoji vec");
             }
             else
             {
-                    WriteToFile(user);
-                    
-                    dataBaseUser.Add(user);
-                
+                WriteToFile(user);
+
+                dataBaseUser.Add(user);
+
+                try
+                {
+                    DirectoryEntry AD = new DirectoryEntry("WinNT://" +
+                                        Environment.MachineName + ",computer");
+                    DirectoryEntry NewUser = AD.Children.Add(username, "user");
+                    NewUser.Invoke("SetPassword", new object[] { password });
+                    NewUser.Invoke("Put", new object[] { "Description", "Test User from .NET" });
+                    NewUser.CommitChanges();
+                    DirectoryEntry grp;
+
+                    grp = AD.Children.Find("User");
+                    if (grp != null) { grp.Invoke("Add", new object[] { NewUser.Path.ToString() }); }
+                    Console.WriteLine("Account Created Successfully");
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    Console.ReadLine();
+
+                }
             }
         }
-#endregion
+        #endregion
 
-
+        # region Delete Account
         public void DeleteAccount()
         {
             //ReadFromFile();
@@ -53,10 +72,17 @@ namespace ServerCommon
             string password = Console.ReadLine();
             User user = new User(username, password);
 
-            if (IsUserExist(user))
+            if (IsUserExist(user) != 0)
             {
-                dataBaseUser.Remove(user);
+                int io = IsUserExist(user);
+                dataBaseUser.RemoveAt(io - 1);
                 WriteList();
+
+                DirectoryEntry localMachine = new DirectoryEntry("WinNT://" + Environment.MachineName + ",computer");
+                DirectoryEntry userE = localMachine.Children.Find(username, "User");
+                localMachine.Children.Remove(userE);
+                userE.Close();
+                localMachine.Close();
             }
             else
             {
@@ -64,6 +90,7 @@ namespace ServerCommon
             }
 
         }
+        # endregion
 
         public void DisableAccount()
         {
@@ -118,7 +145,7 @@ namespace ServerCommon
                 
             }
         }
-
+        /*
         public bool IsUserExist(User user)
         {
             foreach (User u in dataBaseUser)
@@ -128,7 +155,24 @@ namespace ServerCommon
             }
             return false;
         }
-
+        */
+        public int IsUserExist(User user)
+        {
+            int i = 0;
+            int j = 0; ;
+            //bool retVal=false;
+            foreach (User u in dataBaseUser)
+            {
+                i++;
+                if (u.Username == user.Username)
+                {
+                    j = i;
+                    //retVal = true;
+                }
+            }
+            // return retVal;
+            return j;
+        }
 
     }
 }
