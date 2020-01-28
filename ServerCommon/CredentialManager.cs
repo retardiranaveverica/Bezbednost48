@@ -7,37 +7,40 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Management;
+using System.DirectoryServices.AccountManagement;
+using System.Security.Principal;
+using System.Net;
 
 namespace ServerCommon
 {
     public class CredentialManager : IAccounts
     {
-        
 
-        List<User> dataBaseUser;
-        //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-        string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        List<User> dataBaseUser = new List<User>();
+        List<string> dataBaseUser1 = new List<string>();
+        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        //string path1 = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika1.txt";
+        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
         Cryptograpy cryptograpy = new Cryptograpy();
 
         #region Create Acoount
         public void CreateAccount()
         {
-            //ReadFromFile();
+            //   updateList();
             Console.WriteLine("Unesite korisničko ime:");
             string username = Console.ReadLine();
-            Console.WriteLine("Unesite lozinku:");
-            string password = Console.ReadLine();
-            User user = new User(username, password/*, false, false, 0*/);
 
             if (IsUserExist(username) != 0)
             {
-                Console.WriteLine("Postoji vec");
+                Console.WriteLine("Korisnik sa tim username vec postoji.");
             }
             else
             {
-                WriteToFile(user);
 
-                dataBaseUser.Add(user);
+                Console.WriteLine("Unesite lozinku:");
+                string password = Console.ReadLine();
+                User user = new User(username, password/*, false, false, 0*/);
 
                 try
                 {
@@ -51,7 +54,12 @@ namespace ServerCommon
 
                     grp = AD.Children.Find("User");
                     if (grp != null) { grp.Invoke("Add", new object[] { NewUser.Path.ToString() }); }
-                    Console.WriteLine("Account Created Successfully");
+
+                    WriteToFile(user);
+
+                    dataBaseUser.Add(user);
+
+                    Console.WriteLine("Korisnik {0} je kreiran.", username);
                 }
                 catch (Exception ex)
                 {
@@ -66,16 +74,15 @@ namespace ServerCommon
         # region Delete Account
         public void DeleteAccount()
         {
-            //ReadFromFile();
-
             Console.WriteLine("Unesite korisničko ime:");
             string username = Console.ReadLine();
-            Console.WriteLine("Unesite lozinku:");
-            string password = Console.ReadLine();
-            User user = new User(username, password);
 
             if (IsUserExist(username) != 0)
             {
+                Console.WriteLine("Unesite lozinku:");
+                string password = Console.ReadLine();
+                User user = new User(username, password);
+
                 try
                 {
                     int io = IsUserExist(username);
@@ -87,8 +94,9 @@ namespace ServerCommon
                     localMachine.Children.Remove(userE);
                     userE.Close();
                     localMachine.Close();
+                    Console.WriteLine("Korisnik {0} je obrisan.", username);
                 }
-                catch(Exception e)
+                catch (Exception e)
                 {
                     Console.WriteLine("Error: {0}", e.Message);
                 }
@@ -124,7 +132,7 @@ namespace ServerCommon
         {
             using (StreamWriter sw = new StreamWriter(File.Open(path, FileMode.Append)))
             {
-                    sw.WriteLine(user.Username + " " + user.Password);
+                sw.WriteLine(user.Username + " " + cryptograpy.EncryptString(user.Password));
             }
         }
 
@@ -132,7 +140,7 @@ namespace ServerCommon
         {
             using (StreamWriter sw = new StreamWriter(path))
             {
-                
+
                 foreach (User user in dataBaseUser)
                 {
                     sw.WriteLine(user.Username + " " + user.Password);
@@ -140,52 +148,87 @@ namespace ServerCommon
 
             }
         }
-        
+
+   /*     public void WriteList1()
+        {
+            using (StreamWriter sw = new StreamWriter(path1))
+            {
+
+                foreach (string s in dataBaseUser1)
+                {
+                    sw.WriteLine(s);
+                }
+
+            }
+        }*/
 
         public void ReadFromFile()
         {
             dataBaseUser = new List<User>();
             using (StreamReader sr = new StreamReader(path))
             {
-                    var lines = System.IO.File.ReadAllLines(path);
-                    foreach (string item in lines)
-                    {
-                        var values = item.Split(' ');
-                        User user = new User();
-                        user.Username = values[0];
-                        user.Password = values[1];
-                        dataBaseUser.Add(user);
-                    }
-                
+                var lines = System.IO.File.ReadAllLines(path);
+                foreach (string item in lines)
+                {
+                    var values = item.Split(' ');
+                    User user = new User();
+                    user.Username = values[0];
+                    user.Password = values[1];
+                    dataBaseUser.Add(user);
+                }
+
             }
         }
-        /*
-        public bool IsUserExist(User user)
-        {
-            foreach (User u in dataBaseUser)
-            {
-                if (u.Username == user.Username)
-                   return true;
-            }
-            return false;
-        }
-        */
+
         public int IsUserExist(string username)
         {
             int i = 0;
-            int j = 0; ;
-            //bool retVal=false;
+            int indexElementa = 0;
             foreach (User u in dataBaseUser)
             {
                 i++;
                 if (u.Username == username)
                 {
-                    j = i;
-                    //retVal = true;
+                    indexElementa = i;
                 }
             }
-            // return retVal;
-            return j;
+
+            return indexElementa;
+        }
+
+        public bool Verife(string username, string password)
+        {
+            bool valid = false;
+
+            using (PrincipalContext context = new PrincipalContext(ContextType.Domain))
+            {
+                valid = context.ValidateCredentials(username, password);
+            }
+
+            using (WindowsIdentity.GetCurrent())
+            {
+
+            }
+
+            return valid;
+        }
+
+
+
+        public void updateList()
+        {
+            var path = string.Format("WinNT://{0},computer", Environment.MachineName);
+            using (var computerEntry = new DirectoryEntry(path))
+            {
+                foreach (DirectoryEntry childEntry in computerEntry.Children)
+                    if (childEntry.SchemaClassName == "User")
+                    {
+                        dataBaseUser1.Add(childEntry.Name);
+
+                        // string s = childEntry.InvokeGet("password").ToString();
+                        //Console.WriteLine("{0}", s);
+                    }
+            }
         }
 
     }
