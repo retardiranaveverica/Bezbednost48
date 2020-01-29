@@ -34,8 +34,8 @@ namespace Bezbednost48
             }
         }
 
-          public void DeleteAccount()
-          {
+        public void DeleteAccount()
+        {
             try
             {
                 factory.DeleteAccount();
@@ -44,7 +44,7 @@ namespace Bezbednost48
             {
                 Console.WriteLine("[DeleteAccount] ERROR = {0}", e.Message);
             }
-          }
+        }
 
         public void ReadFromFile()
         {

@@ -111,18 +111,42 @@ namespace ServerCommon
 
         public void DisableAccount(string username)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
+            
+            UserPrincipal userP = UserPrincipal.FindByIdentity(ctx, username);
+
+            if (userP != null)
+            {
+                userP.Enabled = false;
+                userP.Save();
+            }
+
             User user = dataBaseUser[(IsUserExist(username))];
             user.AccountDisabled = true;
+
         }
 
         public void EnableAccount(string username)
         {
+            PrincipalContext ctx = new PrincipalContext(ContextType.Machine);
+
+            UserPrincipal userP = UserPrincipal.FindByIdentity(ctx, username);
+
+            if (userP != null)
+            {
+                userP.Enabled = true;
+                userP.Save();
+            }
+
             User user = dataBaseUser[(IsUserExist(username))];
             user.AccountDisabled = false;
         }
-
+        //na netu pise da ne mogu da se zakljucaju i otkljucaju useri tamo u cm...
         public void LockAccount(string username)
         {
+           // DirectoryEntry directoryEntry = new DirectoryEntry();
+           // directoryEntry.InvokeSet("IsAccountLocked", true);
+
             User user = dataBaseUser[(IsUserExist(username))];
             user.AccountLock = true;
         }

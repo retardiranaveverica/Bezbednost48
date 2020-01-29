@@ -31,8 +31,8 @@ namespace Server
                 {
                     server.ReadFromFile();
                     Console.WriteLine("\n*************************");
-                    Console.WriteLine("1.Create account");
-                    Console.WriteLine("2.Delete account");
+                    Console.WriteLine("1.Kreiraj nalog");
+                    Console.WriteLine("2.Obrisi nalog");
                     Console.WriteLine("*************************");
                     try
                     {
@@ -47,7 +47,7 @@ namespace Server
                                 }
                                 catch
                                 {
-                                    Console.WriteLine("Greska!\n");
+                                    Console.WriteLine("Greska prilikom kreiranja naloga!\n");
                                 }
                                 break;
                             case 2:
@@ -57,7 +57,7 @@ namespace Server
                                 }
                                 catch
                                 {
-                                    Console.WriteLine("Greska!\n");
+                                    Console.WriteLine("Greska prilikom brisanja naloga!\n");
                                 }
                                 break;
 
