@@ -30,36 +30,45 @@ namespace Server
                 while (true)
                 {
                     server.ReadFromFile();
+                    Console.WriteLine("\n*************************");
                     Console.WriteLine("1.Create account");
                     Console.WriteLine("2.Delete account");
-                    int num = Int32.Parse(Console.ReadLine());
-                    //resi ti znas sta
-                    switch (num)
+                    Console.WriteLine("*************************");
+                    try
                     {
-                        case 1:
-                            try
-                            {
-                                server.CreateAccount();
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Greska!\n");
-                            }
-                            break;
-                        case 2:
-                            try
-                            {
-                                server.DeleteAccount();
-                            }
-                            catch
-                            {
-                                Console.WriteLine("Greska!\n");
-                            }
-                            break;
+                        int num = Int32.Parse(Console.ReadLine());
 
-                        default:
-                            Console.WriteLine("Error");
-                            break;
+                        switch (num)
+                        {
+                            case 1:
+                                try
+                                {
+                                    server.CreateAccount();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Greska!\n");
+                                }
+                                break;
+                            case 2:
+                                try
+                                {
+                                    server.DeleteAccount();
+                                }
+                                catch
+                                {
+                                    Console.WriteLine("Greska!\n");
+                                }
+                                break;
+
+                            default:
+                                Console.WriteLine("Error");
+                                break;
+                        }
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Unesite 1 ili 2!");
                     }
                 }
             }
