@@ -16,7 +16,7 @@ namespace ServerCommon
 
         List<User> dataBaseUser;
         //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-        string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
         Cryptograpy cryptograpy = new Cryptograpy();
 
         #region Create Acoount
@@ -35,10 +35,11 @@ namespace ServerCommon
             }
             else
             {
-                WriteToFile(user);
-
                 dataBaseUser.Add(user);
-
+                string cryptPass = cryptograpy.EncryptString(user.Password);
+                user.Password = cryptPass;
+                WriteToFile(user);
+                               
                 try
                 {
                     DirectoryEntry AD = new DirectoryEntry("WinNT://" +

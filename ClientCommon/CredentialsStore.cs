@@ -7,6 +7,7 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace ClientCommon
 {
     public class CredentialsStore
@@ -144,7 +145,7 @@ namespace ClientCommon
                 while (!streamReader.EndOfStream)
                 {
                     string text = streamReader.ReadLine();
-                    string[] tekst = text.Split('\n');
+                    string[] tekst = text.Split(' ');
 
                     dozvoljen_br_neuspesnih = Int32.Parse(tekst[0]);
                     vreme_za_otkljucavanje = Int32.Parse(tekst[1]);
