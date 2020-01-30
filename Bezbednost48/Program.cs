@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,7 +23,16 @@ namespace Server
 
             //autorizacija
             //host.Authorization.ServiceAuthorizationManager = new MyAutorizationManager();
-           
+
+            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            newAudit.AuditLogLocation = AuditLogLocation.Application;
+            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
+            newAudit.SuppressAuditFailure = true;
+
+            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            host.Description.Behaviors.Add(newAudit);
+
+
             host.Open();
             //Host open
             using (WcfServer server = new WcfServer(binding, endpointAddress))
@@ -62,7 +72,7 @@ namespace Server
                                 break;
 
                             default:
-                                Console.WriteLine("Error");
+                                Console.WriteLine("Unesite 1 ili 2!");
                                 break;
                         }
                     }
