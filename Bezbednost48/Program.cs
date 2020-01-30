@@ -1,11 +1,14 @@
 ﻿using Bezbednost48;
 using Common;
+using Manager;
 using ServerCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -15,11 +18,22 @@ namespace Server
     {
         static void Main(string[] args)
         {
+
+            string srvCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name); 
+
             NetTcpBinding binding = new NetTcpBinding();
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+
             string address = "net.tcp://localhost:9999/CredentialManager";
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
+
+
+            host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
+            host.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ServiceCertValidator();
+            host.Credentials.ClientCertificate.Authentication.RevocationMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck;
+            host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine, srvCertCN);
 
             //autorizacija
             //host.Authorization.ServiceAuthorizationManager = new MyAutorizationManager();

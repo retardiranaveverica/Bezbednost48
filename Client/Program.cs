@@ -1,9 +1,11 @@
 ﻿using ClientCommon;
 using Common;
+using Manager;
 using ServerCommon;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,11 +16,18 @@ namespace Client
     {
         static void Main(string[] args)
         {
+            string srvCertCN = "wcfs";
+            string signCertCN = String.Empty;
+
             NetTcpBinding binding = new NetTcpBinding();
+
+            binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
+            X509Certificate2 srvCert = CertManager.GetCertificateFromStorage(StoreName.TrustedPeople, StoreLocation.LocalMachine, srvCertCN);
 
             //konekcija sa serverom
             string address = "net.tcp://localhost:9999/CredentialManager";
-            EndpointAddress endpointAdress = new EndpointAddress(new Uri(address));
+            EndpointAddress endpointAdress = new EndpointAddress(new Uri(address), 
+                                                                    new X509CertificateEndpointIdentity(srvCert));
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
 
@@ -27,7 +36,8 @@ namespace Client
             
             using (WcfClient proxy = new WcfClient(binding, endpointAdress))
             {
-                Console.WriteLine("Uspesno ste konektovani!\n");
+                X509Certificate2 signCert = null;
+                Console.WriteLine("Uspesno ste konektovani koristeci sertifikat {0}!\n", srvCertCN);
 
                 while (true)
                 {

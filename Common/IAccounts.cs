@@ -10,9 +10,6 @@ namespace Common
     [ServiceContract]
     public interface IAccounts
     {
-        //morace da se salje stringovi zbog referenci
-        //pravi se ona cirkularna nesto
-
         [OperationContract]
         void CreateAccount();
 
@@ -30,6 +27,5 @@ namespace Common
 
         [OperationContract]
         void ReadFromFile();
-
     }
 }

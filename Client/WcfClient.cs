@@ -1,7 +1,9 @@
 ﻿using Common;
+using Manager;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.ServiceModel;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,11 +17,15 @@ namespace Client
 
         public WcfClient(NetTcpBinding binding, EndpointAddress address) : base(binding, address)
         {
-            //-------------------------------------------------------------------------------------------------//
-            //proveriti sta radi ovo
-            //predstavljanje usera
-            Credentials.Windows.AllowedImpersonationLevel =
-              System.Security.Principal.TokenImpersonationLevel.Impersonation;
+            Credentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
+
+            string cltCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
+            this.Credentials.ServiceCertificate.Authentication.CertificateValidationMode = System.ServiceModel.Security.X509CertificateValidationMode.Custom;
+            this.Credentials.ServiceCertificate.Authentication.CustomCertificateValidator = new ClientCertValidator();
+            this.Credentials.ServiceCertificate.Authentication.RevocationMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck;
+
+            this.Credentials.ClientCertificate.Certificate = CertManager.GetCertificateFromStorage(System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine, cltCertCN);
+
             factory = this.CreateChannel();
         }
 

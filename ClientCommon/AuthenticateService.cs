@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,8 @@ namespace ClientCommon
         #region LogIn
         public void LogIn(/*string username, string password*/)
         {
-            
+            X509Certificate2 clientCertificate = null;
+
             Console.WriteLine("Unesite username:");
             string name = Console.ReadLine();
             Console.WriteLine("Unesite lozinku:");
@@ -94,6 +96,7 @@ namespace ClientCommon
 
             #endregion
 
+            X509Certificate2 clientCertificate = null;
             Console.WriteLine("Unesite username:");
             string name = Console.ReadLine();
 
@@ -111,85 +114,7 @@ namespace ClientCommon
         }
         #endregion
 
-        // prebaceno u CredentialStore
-       /* #region Looking for username
-        private bool UserNameExist(string username)
-        {
-            //Snezana putanja
-            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
-            //Maja putanja
-            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-
-            using (StreamReader streamReader = new StreamReader(path))
-            {
-
-                while (!streamReader.EndOfStream) {
-                    string text = streamReader.ReadLine();
-                    string[] tekst = text.Split(' ');
-                    string userName = tekst[0];
-
-                    if (username == userName)
-                        return true;
-                }
-
-                return false;
-            }
-        }
-        #endregion
-
-        #region Looking for password
-        private bool UserPassExist(string password)
-        {
-            //Snezana putanja
-            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
-            //Maja putanja
-            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-
-            using (StreamReader streamReader = new StreamReader(path))
-            {
-                while (!streamReader.EndOfStream) {
-                    string text = streamReader.ReadLine();
-                    string[] tekst = text.Split(' ');
-                    string userPass = tekst[1];
-
-                    if (password == userPass)
-                        return true;
-                }
-
-                return false;
-            }
-        }
-        #endregion
-
-        #region Get pass for user
-
-        private string GetPassword(string username)
-        {
-            string pass = "";
-            //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
-            string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
-
-            using (StreamReader streamReader  = new StreamReader(path))
-            {
-                while (!streamReader.EndOfStream)
-                {
-                    string text = streamReader.ReadLine();
-                    string[] tekst = text.Split(' ');
-                    string name = tekst[0];
-                    string password = tekst[1];
-
-                    if(username == name)
-                    {
-                        pass = password;
-                    }
-                }
-            }
-
-            return pass;
-        }
-
-        #endregion
-        */
+        
         #region CheckIsLogged
 
         private bool isLogged(string username)
