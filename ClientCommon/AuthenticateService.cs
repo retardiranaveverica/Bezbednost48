@@ -8,23 +8,28 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
+
 namespace ClientCommon
 {   
     public class AuthenticateService : ILog
     {
         public List<User> ulogovaniKorisnici = new List<User>();
         CredentialsStore credentialsStore = new CredentialsStore();
-        // string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+        int brPokusaja = 0;
 
         #region LogIn
         public void LogIn(/*string username, string password*/)
         {
+            
             Console.WriteLine("Unesite username:");
             string name = Console.ReadLine();
             Console.WriteLine("Unesite lozinku:");
             string pass = Console.ReadLine();
 
             
+
             if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
             {
                 if (!isLogged(name))
@@ -41,8 +46,17 @@ namespace ClientCommon
                     Console.WriteLine("Ne postoji korisnik!");
                 else if (credentialsStore.UserNameExist(name) && !credentialsStore.UserPassExist(pass))
                 {
+                    
                     Console.WriteLine("Neispravna lozinka!");
+                    brPokusaja++;
 
+                    if (brPokusaja == credentialsStore.Rules(1))
+                    {
+                        //ovde treba pozvatti Majinu funkciju
+
+                        Console.WriteLine("Nalog je blokiran!");
+                    }
+                    
                 }
             }
         }
