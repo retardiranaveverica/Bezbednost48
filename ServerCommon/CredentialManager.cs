@@ -19,9 +19,9 @@ namespace ServerCommon
 
         List<User> dataBaseUser = new List<User>();
         List<string> dataBaseUser1 = new List<string>();
-        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        //string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
         //string path1 = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika1.txt";
-        //string path = @"C:\Users\a\Desktop\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
         Cryptograpy cryptograpy = new Cryptograpy();
 
         #region Create Acoount

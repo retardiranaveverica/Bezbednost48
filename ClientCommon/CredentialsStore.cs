@@ -7,17 +7,16 @@ using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 
-
 namespace ClientCommon
 {
     public class CredentialsStore
     {
         Cryptograpy cryptograpy = new Cryptograpy();
-        //string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
-        string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+       // string path = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaKorisnika.txt";
 
-        //string path_pravila = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaPravila.txt";
-        string path_pravila = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaPravila.txt";
+        string path_pravila = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaPravila.txt";
+       // string path_pravila = @"C:\Users\acer\source\repos\retardiranaveverica\Bezbednost48\BazaPravila.txt";
 
 
         //Ove dve funkcije se koriste kod LogIn-a

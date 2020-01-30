@@ -16,7 +16,7 @@ namespace ClientCommon
         public List<User> ulogovaniKorisnici = new List<User>();
         CredentialsStore credentialsStore = new CredentialsStore();
 
-        // string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
+        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
         int brPokusaja = 0;
 
         #region LogIn
@@ -53,6 +53,7 @@ namespace ClientCommon
                     if (brPokusaja == credentialsStore.Rules(1))
                     {
                         //ovde treba pozvatti Majinu funkciju
+
                         Console.WriteLine("Nalog je blokiran!");
                     }
                     

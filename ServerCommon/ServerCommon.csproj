@@ -57,6 +57,10 @@
       <Project>{C0168A40-A04B-4595-90BD-7B83A52C79D9}</Project>
       <Name>Common</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Manager\Manager.csproj">
+      <Project>{d01742eb-5f02-401c-a284-e0139275def1}</Project>
+      <Name>Manager</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="BazaKorisnika.txt" />
