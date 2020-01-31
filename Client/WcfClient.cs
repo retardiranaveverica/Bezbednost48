@@ -17,6 +17,8 @@ namespace Client
 
         public WcfClient(NetTcpBinding binding, EndpointAddress address) : base(binding, address)
         {
+            
+
             Credentials.Windows.AllowedImpersonationLevel = System.Security.Principal.TokenImpersonationLevel.Impersonation;
 
             string cltCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name);
@@ -25,8 +27,11 @@ namespace Client
             this.Credentials.ServiceCertificate.Authentication.RevocationMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck;
 
             this.Credentials.ClientCertificate.Certificate = CertManager.GetCertificateFromStorage(System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine, cltCertCN);
+            
 
             factory = this.CreateChannel();
+
+            
         }
 
         public void LogIn(/*string username, string password*/)

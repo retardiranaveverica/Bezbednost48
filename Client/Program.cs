@@ -4,6 +4,7 @@ using Manager;
 using ServerCommon;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Policy;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
@@ -30,15 +31,20 @@ namespace Client
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
 
+            host.Authorization.ServiceAuthorizationManager = new MyAuthorizationManager();
+            host.Authorization.PrincipalPermissionMode = System.ServiceModel.Description.PrincipalPermissionMode.Custom;
+            List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>();
+            policies.Add(new CustomAuthorizationPolicy());
+            host.Authorization.ExternalAuthorizationPolicies = policies.AsReadOnly();
             // WcfClient wcfClient = new WcfClient(binding, endpointAdress);
             AuthenticateService authenticateService = new AuthenticateService();
-            
             
 
             using (WcfClient proxy = new WcfClient(binding, endpointAdress))
             {
                 Console.WriteLine("Uspesno ste konektovani koristeci sertifikat {0}!\n", srvCertCN);
 
+                
                 while (true)
                 {
                     Console.WriteLine("Unesite zeljenu akciju:");
@@ -54,11 +60,7 @@ namespace Client
                         {
                             case 1:
 
-                                /* Console.WriteLine("Unesite username:");
-                                 string name = Console.ReadLine();
-                                 Console.WriteLine("Unesite lozinku:");
-                                 string pass = Console.ReadLine();*/
-                                //proxy.LogIn(name, pass);
+                                
                                 authenticateService.LogIn(/*name, pass*/);
 
                                 break;

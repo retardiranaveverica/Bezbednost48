@@ -1,10 +1,12 @@
 ﻿using Common;
+using Manager;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Principal;
+using System.ServiceModel;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,26 +24,29 @@ namespace ClientCommon
         #region LogIn
         public void LogIn(/*string username, string password*/)
         {
-            X509Certificate2 clientCertificate = null;
-
-            Console.WriteLine("Unesite username:");
-            string name = Console.ReadLine();
-            Console.WriteLine("Unesite lozinku:");
-            string pass = Console.ReadLine();
 
             
+                X509Certificate2 clientCertificate = null;
 
+                Console.WriteLine("Unesite username:");
+                string name = Console.ReadLine();
+                Console.WriteLine("Unesite lozinku:");
+                string pass = Console.ReadLine();
+
+
+            if (!Thread.CurrentPrincipal.IsInRole("User"))
+            {
                 if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
                 {
                     if (!isLogged(name))
                     {
-                        
+
                         DateTime logDate = DateTime.Now;
                         User user = new User(name, pass, logDate);
                         ulogovaniKorisnici.Add(user);
                         Console.WriteLine("Uspesno ste ulogovani");
-                        
-                        
+
+
                     }
                     else
                         Console.WriteLine("Korisnik je vec ulogovan!");
@@ -60,12 +65,20 @@ namespace ClientCommon
 
                         if (numLog == credentialsStore.Rules(1))
                         {
-                              Console.WriteLine("Nalog je blokiran");
-                              //Nekako pozvati Majinu funkciju
-                              numLog = 0;
+                            Console.WriteLine("Nalog je blokiran");
+                            //Nekako pozvati Majinu funkciju
+                            numLog = 0;
                         }
                     }
                 }
+
+            }
+            else
+            {
+                string userName = Formatter.ParseName(Thread.CurrentPrincipal.Identity.Name);
+                throw new FaultException("User" + userName + "pokusao je da pozove metodu LogIn");
+            }
+
             
         }
         #endregion

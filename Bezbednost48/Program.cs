@@ -12,6 +12,8 @@ using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
 using System.Security.Cryptography.X509Certificates;
+using System.IdentityModel.Policy;
+
 namespace Server
 {
     class Program
@@ -29,26 +31,20 @@ namespace Server
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
-
             
-
             host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
             host.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ServiceCertValidator();
             host.Credentials.ClientCertificate.Authentication.RevocationMode = System.Security.Cryptography.X509Certificates.X509RevocationMode.NoCheck;
             host.Credentials.ServiceCertificate.Certificate = CertManager.GetCertificateFromStorage(System.Security.Cryptography.X509Certificates.StoreName.My, System.Security.Cryptography.X509Certificates.StoreLocation.LocalMachine, srvCertCN);
 
             //autorizacija
-            //host.Authorization.ServiceAuthorizationManager = new MyAutorizationManager();
+           /* host.Authorization.ServiceAuthorizationManager = new MyAuthorizationManager();
 
-            //  ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
-            // newAudit.AuditLogLocation = AuditLogLocation.Application;
-            // newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
-            // newAudit.SuppressAuditFailure = true;
-
-            //  host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
-            // host.Description.Behaviors.Add(newAudit);
-
-
+            host.Authorization.PrincipalPermissionMode = PrincipalPermissionMode.Custom;
+            List<IAuthorizationPolicy> policies = new List<IAuthorizationPolicy>();
+            policies.Add(new CustomAuthorizationPolicy());
+            host.Authorization.ExternalAuthorizationPolicies = policies.AsReadOnly();
+            */
             host.Open();
             //Host open
             CredentialManager credentialManager = new CredentialManager();

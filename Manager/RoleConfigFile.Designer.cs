@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Common {
+namespace Manager {
     using System;
     
     
@@ -22,14 +22,14 @@ namespace Common {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class AuditEventFile {
+    internal class RoleConfigFile {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal AuditEventFile() {
+        internal RoleConfigFile() {
         }
         
         /// <summary>
@@ -39,7 +39,7 @@ namespace Common {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Common.AuditEventFile", typeof(AuditEventFile).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Manager.RoleConfigFile", typeof(RoleConfigFile).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,29 +61,20 @@ namespace Common {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to User {0} successfully authenticated..
+        ///   Looks up a localized string similar to CreateAccount, DeleteAccount, LockAccount, DisableAccount, EnableAccount.
         /// </summary>
-        internal static string UserAuthenticationSuccess {
+        internal static string Admin {
             get {
-                return ResourceManager.GetString("UserAuthenticationSuccess", resourceCulture);
+                return ResourceManager.GetString("Admin", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Authorization failed. User {0} failed to access {1}. Reason: {2}.
+        ///   Looks up a localized string similar to LogIn, LogOut.
         /// </summary>
-        internal static string UserAuthorizationFailed {
+        internal static string User {
             get {
-                return ResourceManager.GetString("UserAuthorizationFailed", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to User {0} successfully accessed to {1}..
-        /// </summary>
-        internal static string UserAuthorizationSuccess {
-            get {
-                return ResourceManager.GetString("UserAuthorizationSuccess", resourceCulture);
+                return ResourceManager.GetString("User", resourceCulture);
             }
         }
     }
