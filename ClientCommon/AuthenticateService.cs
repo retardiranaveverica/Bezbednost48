@@ -18,8 +18,8 @@ namespace ClientCommon
         CredentialsStore credentialsStore = new CredentialsStore();
 
         string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
-        int brPokusaja = 0;
-
+        int numLog = 0;
+        
         #region LogIn
         public void LogIn(/*string username, string password*/)
         {
@@ -32,35 +32,42 @@ namespace ClientCommon
 
             
 
-            if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
-            {
-                if (!isLogged(name))
+                if (credentialsStore.UserNameExist(name) && credentialsStore.UserPassExist(pass))
                 {
-                    ulogovaniKorisnici.Add(new User(name, pass));
-                    Console.WriteLine("Uspesno ste ulogovani");
-                } else
-                    Console.WriteLine("Korisnik je vec ulogovan!");
-                  
-                
-            } else
-            {
-                if (!credentialsStore.UserNameExist(name))
-                    Console.WriteLine("Ne postoji korisnik!");
-                else if (credentialsStore.UserNameExist(name) && !credentialsStore.UserPassExist(pass))
-                {
-                    
-                    Console.WriteLine("Neispravna lozinka!");
-                    brPokusaja++;
-
-                    if (brPokusaja == credentialsStore.Rules(1))
+                    if (!isLogged(name))
                     {
-                        //ovde treba pozvatti Majinu funkciju
-
-                        Console.WriteLine("Nalog je blokiran!");
+                        
+                        DateTime logDate = DateTime.Now;
+                        User user = new User(name, pass, logDate);
+                        ulogovaniKorisnici.Add(user);
+                        Console.WriteLine("Uspesno ste ulogovani");
+                        
+                        
                     }
-                    
+                    else
+                        Console.WriteLine("Korisnik je vec ulogovan!");
+
+
                 }
-            }
+                else
+                {
+                    if (!credentialsStore.UserNameExist(name))
+                        Console.WriteLine("Ne postoji korisnik!");
+
+                    else if (credentialsStore.UserNameExist(name) && !credentialsStore.UserPassExist(pass))
+                    {
+                        Console.WriteLine("Neispravna lozinka!");
+                        numLog++;
+
+                        if (numLog == credentialsStore.Rules(1))
+                        {
+                              Console.WriteLine("Nalog je blokiran");
+                              //Nekako pozvati Majinu funkciju
+                              numLog = 0;
+                        }
+                    }
+                }
+            
         }
         #endregion
 
@@ -114,7 +121,7 @@ namespace ClientCommon
         }
         #endregion
 
-        
+
         #region CheckIsLogged
 
         private bool isLogged(string username)

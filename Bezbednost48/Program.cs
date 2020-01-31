@@ -19,7 +19,8 @@ namespace Server
         static void Main(string[] args)
         {
 
-            string srvCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name); 
+            //string srvCertCN = Formatter.ParseName(WindowsIdentity.GetCurrent().Name); 
+            string srvCertCN = "wcfs";
 
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
@@ -38,13 +39,13 @@ namespace Server
             //autorizacija
             //host.Authorization.ServiceAuthorizationManager = new MyAutorizationManager();
 
-            ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
-            newAudit.AuditLogLocation = AuditLogLocation.Application;
-            newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
-            newAudit.SuppressAuditFailure = true;
+          //  ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+           // newAudit.AuditLogLocation = AuditLogLocation.Application;
+           // newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
+           // newAudit.SuppressAuditFailure = true;
 
-            host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
-            host.Description.Behaviors.Add(newAudit);
+          //  host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+           // host.Description.Behaviors.Add(newAudit);
 
 
             host.Open();

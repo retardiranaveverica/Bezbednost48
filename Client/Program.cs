@@ -17,7 +17,6 @@ namespace Client
         static void Main(string[] args)
         {
             string srvCertCN = "wcfs";
-            string signCertCN = String.Empty;
 
             NetTcpBinding binding = new NetTcpBinding();
 
