@@ -33,9 +33,10 @@ namespace Client
             // WcfClient wcfClient = new WcfClient(binding, endpointAdress);
             AuthenticateService authenticateService = new AuthenticateService();
             
+            
+
             using (WcfClient proxy = new WcfClient(binding, endpointAdress))
             {
-                X509Certificate2 signCert = null;
                 Console.WriteLine("Uspesno ste konektovani koristeci sertifikat {0}!\n", srvCertCN);
 
                 while (true)

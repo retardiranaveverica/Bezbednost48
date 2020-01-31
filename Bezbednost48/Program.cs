@@ -11,7 +11,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Security.Cryptography.X509Certificates;
 namespace Server
 {
     class Program
@@ -25,11 +25,12 @@ namespace Server
             NetTcpBinding binding = new NetTcpBinding();
             binding.Security.Transport.ClientCredentialType = TcpClientCredentialType.Certificate;
 
-            string address = "net.tcp://localhost:9999/CredentialManager";
+            string address = "net.tcp://localhost:9999/AuthenticationService";
             EndpointAddress endpointAddress = new EndpointAddress(new Uri(address));
             ServiceHost host = new ServiceHost(typeof(CredentialManager));
             host.AddServiceEndpoint(typeof(IAccounts), binding, address);
 
+            
 
             host.Credentials.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.Custom;
             host.Credentials.ClientCertificate.Authentication.CustomCertificateValidator = new ServiceCertValidator();
@@ -39,22 +40,22 @@ namespace Server
             //autorizacija
             //host.Authorization.ServiceAuthorizationManager = new MyAutorizationManager();
 
-          //  ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
-           // newAudit.AuditLogLocation = AuditLogLocation.Application;
-           // newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
-           // newAudit.SuppressAuditFailure = true;
+            //  ServiceSecurityAuditBehavior newAudit = new ServiceSecurityAuditBehavior();
+            // newAudit.AuditLogLocation = AuditLogLocation.Application;
+            // newAudit.ServiceAuthorizationAuditLevel = AuditLevel.SuccessOrFailure;
+            // newAudit.SuppressAuditFailure = true;
 
-          //  host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
-           // host.Description.Behaviors.Add(newAudit);
+            //  host.Description.Behaviors.Remove<ServiceSecurityAuditBehavior>();
+            // host.Description.Behaviors.Add(newAudit);
 
 
             host.Open();
             //Host open
-            using (WcfServer server = new WcfServer(binding, endpointAddress))
-            {
+            CredentialManager credentialManager = new CredentialManager();
+            credentialManager.ReadFromFile();
                 while (true)
                 {
-                    server.ReadFromFile();
+                //    server.ReadFromFile();
                     Console.WriteLine("\n*************************");
                     Console.WriteLine("1.Kreiraj nalog");
                     Console.WriteLine("2.Obrisi nalog");
@@ -68,7 +69,7 @@ namespace Server
                             case 1:
                                 try
                                 {
-                                    server.CreateAccount();
+                                    credentialManager.CreateAccount();
                                 }
                                 catch
                                 {
@@ -78,7 +79,7 @@ namespace Server
                             case 2:
                                 try
                                 {
-                                    server.DeleteAccount();
+                                    credentialManager.DeleteAccount();
                                 }
                                 catch
                                 {
@@ -96,7 +97,7 @@ namespace Server
                         Console.WriteLine("Unesite 1 ili 2!");
                     }
                 }
-            }
+            
 
             //st.Close();
            

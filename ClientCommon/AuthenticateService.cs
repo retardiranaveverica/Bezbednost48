@@ -17,7 +17,6 @@ namespace ClientCommon
         public List<User> ulogovaniKorisnici = new List<User>();
         CredentialsStore credentialsStore = new CredentialsStore();
 
-        string path = @"C:\Users\a\Desktop\Bezbednost - Projekat\Bezbednost48\BazaKorisnika.txt";
         int numLog = 0;
         
         #region LogIn
